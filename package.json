@@ -1,0 +1,29 @@
+{
+  "name": "bandamusical",
+  "version": "1.0.0",
+  "description": "Backend de una app de bandas musicales",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "dotenv -e .env -- nodemon ./src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoaquinValderrama/backend_final.git"
+  },
+  "author": "Joaquin Eduardo Valderrama Echegaray",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JoaquinValderrama/backend_final/issues"
+  },
+  "homepage": "https://github.com/JoaquinValderrama/backend_final#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "prisma": "^4.2.1"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^6.0.0",
+    "nodemon": "^2.0.19"
+  }
+}

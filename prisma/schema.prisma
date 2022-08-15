@@ -1,0 +1,99 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Genero{
+  id Int @id @unique @default(autoincrement())
+  name String @db.VarChar(45)
+  description String  @db.VarChar(45)
+  cannciones CancionesOnGenero[]
+  albums AlbumOnGenero[]
+  interprete GeneroOnInterprete[]
+  @@map("generoMusical")
+}
+
+
+model Album {
+  id Int @id @unique @default(autoincrement())
+  name String @db.VarChar(45) 
+  released DateTime @db.Date
+  duration DateTime @db.Time()
+  description String? @db.Text
+  interpreteId Int @map("interprete_id")
+  interprete Interprete @relation(fields:[interpreteId],references:[id])
+  canciones Cancion[]
+  generos AlbumOnGenero[]
+  
+@@map ("album")
+}
+
+model Interprete{
+  id Int @id @unique @default(autoincrement())
+  name String @db.VarChar(45)
+  provenience String @db.VarChar(45)
+  recordCo String @db.VarChar(45)
+  creation DateTime @db.Date
+  miembros Miembro[]
+  albums Album[]
+  generos GeneroOnInterprete[]
+  @@map ("interprete")
+}
+
+model Miembro{
+  id Int @id @unique @default(autoincrement())
+  name String @db.VarChar(100)
+  age Int
+  nationality String @db.VarChar(45)
+  born DateTime @db.Date
+  interpreteId Int @map("interprete_id")
+
+  interprete Interprete @relation(fields:[interpreteId],references: [id])
+  @@map ("miembro")
+}
+
+model Cancion{
+  id Int @id @unique @default(autoincrement())
+  name String @db.VarChar(45)
+  duration DateTime @db.Time()
+  albumId Int @map("album_id")
+  generos CancionesOnGenero[]
+  album Album @relation(fields:[albumId],references: [id])
+
+  @@map ("cancion")
+}
+
+
+model CancionesOnGenero {
+  cancion Cancion @relation(fields:[cancionId],references:[id])
+  cancionId Int @map("cancion_id")
+  genero Genero @relation(fields:[generoId],references: [id])
+  generoId Int @map("genero_id")
+
+  @@id([cancionId,generoId])
+}
+
+model AlbumOnGenero {
+  album Album @relation(fields:[albumId],references: [id])
+  albumId Int @map("album_id")
+  genero Genero @relation(fields:[generoId],references: [id])
+  generoId Int @map("genero_id")
+
+  @@id([albumId,generoId])
+}
+
+model GeneroOnInterprete{
+  interprete Interprete @relation(fields:[interpreteId],references:[id])
+  interpreteId Int  @map("interprete_id")
+  genero Genero @relation(fields:[generoId],references: [id])
+  generoId Int @map("genero_id")
+
+  @@id([interpreteId,generoId])
+}
